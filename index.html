@@ -340,8 +340,8 @@ button:active {
 <div class="particles" id="particles"></div>
 
 <!-- Audio -->
-<audio id="music" loop>
-  <source src="https://cdn.pixabay.com/audio/2022/03/10/audio_4a1f57673d.mp3" type="audio/mpeg">
+<audio id="music">
+  <source src="thesmiths.mp3" type="audio/mpeg">
 </audio>
 
 <!-- Screen 1: Welcome -->
@@ -385,7 +385,7 @@ button:active {
 
 <!-- Screen 6: Valentine's -->
 <div class="screen" id="s6">
-  <h1>Happy Valentine's Day <span class="heart-pulse">🌹</span></h1>
+  <h1>Happy Valentine's Day <span class="heart-pulse">🌼</span></h1>
   <p>Ich hoffe, du lächelst gerade genau so wie ich.</p>
   <p style="font-size: 18px; margin-top: 30px;">Aber warte... da ist noch etwas...</p>
   <button onclick="nextScreen(6)">Was denn? 👀</button>
@@ -436,8 +436,32 @@ function initParticles() {
 // Start experience
 function startExperience() {
   const music = document.getElementById('music');
+  
+  // Set start time to 58 seconds (0:58)
+  music.currentTime = 58;
+  
+  // Add event listener to loop from 58 seconds
+  music.addEventListener('ended', function() {
+    music.currentTime = 58;
+    music.play();
+  });
+  
+  // Also reset to 58 seconds when manually seeking or on timeupdate near the end
+  music.addEventListener('timeupdate', function() {
+    // If we somehow go before 58 seconds, reset to 58
+    if (music.currentTime < 58 && music.currentTime > 1) {
+      music.currentTime = 58;
+    }
+  });
+  
   music.play().catch(() => {
-    console.log('Audio autoplay blocked');
+    console.log('Audio autoplay blocked - click anywhere to start music');
+    // Fallback: start on first user interaction
+    document.addEventListener('click', function startMusic() {
+      music.currentTime = 58;
+      music.play();
+      document.removeEventListener('click', startMusic);
+    }, { once: true });
   });
   
   transitionScreen(1, 2);
