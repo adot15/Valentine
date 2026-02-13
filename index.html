@@ -3,65 +3,76 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Für dich ❤️</title>
+<title>Für dich 🌸</title>
 
 <style>
 body{
   margin:0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg,#ff758c,#ff7eb3);
-  overflow-x:hidden;
-  color:white;
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(180deg,#ff9bb3,#ffc3d1,#ffe4ec);
+  overflow:hidden;
+  color:#fff;
   text-align:center;
 }
 
-.container{
-  display:none;
-  padding:40px 20px;
-  animation:fadeIn 2s ease;
+/* Sakura petals */
+.sakura{
+  position:fixed;
+  top:-10px;
+  font-size:18px;
+  animation:fall linear forwards;
+  pointer-events:none;
 }
 
-h1{
-  font-size:42px;
+@keyframes fall{
+  to{
+    transform:translateY(110vh) rotate(360deg);
+    opacity:0;
+  }
 }
 
-p{
-  font-size:20px;
-  max-width:600px;
-  margin:20px auto;
-}
-
-button{
-  padding:20px 40px;
-  font-size:22px;
-  border:none;
-  border-radius:40px;
-  background:#ff4d6d;
-  color:white;
-  cursor:pointer;
-  box-shadow:0 10px 25px rgba(0,0,0,0.2);
-  transition:0.3s;
-}
-
-button:hover{
-  transform:scale(1.1);
-}
-
-#startScreen{
+.screen{
   position:fixed;
   width:100%;
   height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  background:linear-gradient(135deg,#ff758c,#ff7eb3);
+  flex-direction:column;
+  padding:20px;
+  box-sizing:border-box;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 1s;
 }
 
+.active{
+  opacity:1;
+  pointer-events:auto;
+}
+
+button{
+  padding:18px 36px;
+  font-size:20px;
+  border:none;
+  border-radius:40px;
+  background:#ff4d6d;
+  color:white;
+  cursor:pointer;
+  margin-top:30px;
+  transition:.3s;
+}
+
+button:hover{transform:scale(1.08);}
+
+h1{font-size:42px;}
+p{font-size:20px;max-width:600px;}
+
 img{
-  width:220px;
+  width:230px;
   border-radius:20px;
   margin-top:20px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.3);
+  box-shadow:0 10px 30px rgba(0,0,0,.3);
   animation:float 4s infinite ease-in-out;
 }
 
@@ -70,70 +81,148 @@ img{
   50%{transform:translateY(-10px);}
 }
 
-@keyframes fadeIn{
-  from{opacity:0; transform:translateY(20px);}
-  to{opacity:1; transform:translateY(0);}
+/* fireworks */
+.firework{
+  position:fixed;
+  font-size:24px;
+  animation:boom 1s ease forwards;
 }
-
-@keyframes floatUp{
-  0%{opacity:1; transform:translateY(0);}
-  100%{opacity:0; transform:translateY(-120px);}
+@keyframes boom{
+  from{transform:scale(0);opacity:1;}
+  to{transform:scale(2);opacity:0;}
 }
 </style>
 </head>
 
 <body>
 
-<div id="startScreen">
-  <button onclick="startLove()">Drück hier ❤️</button>
+<audio id="music" src="music.mp3" loop></audio>
+
+<!-- 1 -->
+<div class="screen active" id="s1">
+<h1>ねえ <span id="name">Amina</span> 🌸</h1>
+<p>Ich habe etwas für dich vorbereitet…</p>
+<button onclick="start()">Start</button>
 </div>
 
-<div class="container">
-  <h1>Hallöchen <span id="name">Amina</span> ❤️</h1>
+<!-- 2 -->
+<div class="screen" id="s2">
+<p>Eigentlich wollte ich dir nur schreiben.</p>
+<p>Aber du bist mir zu wichtig für nur Text.</p>
+<button onclick="next(2)">Weiter</button>
+</div>
 
-  <p>Süßli…</p>
+<!-- 3 -->
+<div class="screen" id="s3">
+<h1>Also habe ich das hier gemacht 😌</h1>
+<button onclick="next(3)">Okay</button>
+</div>
 
-  <p>
-  Eigentlich wollte ich dir nur eine normale Nachricht schicken.  
-  Aber du bist mir zu wichtig für etwas Normales.
-  </p>
+<!-- 4 -->
+<div class="screen" id="s4">
+<img src="img/vector.jpg">
+<p>Du bringst mich zum Lächeln.</p>
+<button onclick="next(4)">Weiter</button>
+</div>
 
-  <p>
-  Also habe ich dir eine kleine Website gemacht 😌  
-  Nur für dich.
-  </p>
+<!-- 5 -->
+<div class="screen" id="s5">
+<p>Ich wollte dir sagen…</p>
+<h1>Du bist besonders.</h1>
+<button onclick="next(5)">Weiter</button>
+</div>
 
-  <img src="img/vector.jpg">
+<!-- 6 -->
+<div class="screen" id="s6">
+<h1>Happy Valentine's Day 🌹</h1>
+<p>Ich hoffe du lächelst gerade.</p>
+<button onclick="next(6)">Noch nicht fertig</button>
+</div>
 
-  <p>
-  Du bist etwas Besonderes.  
-  Und ich wollte dir einfach ein Lächeln schenken.
-  </p>
+<!-- 7 -->
+<div class="screen" id="s7">
+<h1>Willst du mein Valentine sein? ❤️</h1>
+<button onclick="yes()">Ja</button>
+<button onclick="moveNo(this)">Nein</button>
+</div>
 
-  <h2>Happy Valentine's Day 🌹</h2>
-
-  <p>
-  (Falls du nochmal schauen willst → klick irgendwo 😌)
-  </p>
+<!-- FINAL -->
+<div class="screen" id="s8">
+<h1>Wusste ich 😌🌸</h1>
+<p>Klick irgendwo…</p>
 </div>
 
 <script>
-function startLove(){
-  document.getElementById("startScreen").style.display="none";
-  document.querySelector(".container").style.display="block";
+let current=1;
+
+/* start music + sakura */
+function start(){
+ document.getElementById("music").play().catch(()=>{});
+ document.getElementById("s1").classList.remove("active");
+ document.getElementById("s2").classList.add("active");
+ startSakura();
 }
 
-document.addEventListener("click", function(e){
-  let heart=document.createElement("div");
-  heart.innerHTML="❤️";
-  heart.style.position="fixed";
-  heart.style.left=e.clientX+"px";
-  heart.style.top=e.clientY+"px";
-  heart.style.fontSize="24px";
-  heart.style.animation="floatUp 2s linear";
-  document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(),2000);
+function next(n){
+ document.getElementById("s"+n).classList.remove("active");
+ document.getElementById("s"+(n+1)).classList.add("active");
+ current=n+1;
+}
+
+function yes(){
+ document.getElementById("s7").classList.remove("active");
+ document.getElementById("s8").classList.add("active");
+ current=8;
+ fireworks();
+}
+
+function moveNo(btn){
+ btn.style.position="absolute";
+ btn.style.left=Math.random()*80+"%";
+ btn.style.top=Math.random()*80+"%";
+}
+
+/* sakura */
+function startSakura(){
+ setInterval(()=>{
+  let s=document.createElement("div");
+  s.innerHTML="🌸";
+  s.className="sakura";
+  s.style.left=Math.random()*100+"vw";
+  s.style.animationDuration=(5+Math.random()*5)+"s";
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),9000);
+ },300);
+}
+
+/* hearts */
+document.addEventListener("click",e=>{
+ if(current!==8) return;
+ let h=document.createElement("div");
+ h.innerHTML="❤️";
+ h.style.position="fixed";
+ h.style.left=e.clientX+"px";
+ h.style.top=e.clientY+"px";
+ h.style.fontSize="24px";
+ h.style.animation="fall 2s linear";
+ document.body.appendChild(h);
+ setTimeout(()=>h.remove(),2000);
 });
+
+/* fireworks */
+function fireworks(){
+ setInterval(()=>{
+  for(let i=0;i<8;i++){
+    let f=document.createElement("div");
+    f.innerHTML="✨";
+    f.className="firework";
+    f.style.left=Math.random()*100+"vw";
+    f.style.top=Math.random()*100+"vh";
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),1000);
+  }
+ },600);
+}
 </script>
 
 </body>
